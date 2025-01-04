@@ -28,7 +28,6 @@ export function EventList() {
       setEvents(data);
     } catch (error) {
       console.error('Error fetching events:', error);
-      setError('Failed to fetch events. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -46,47 +45,70 @@ export function EventList() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <SearchBar onSearch={handleSearch} />
-      
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-          {error}
-        </div>
-      )}
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <div className="container mx-auto p-6">
+        <h1 className="text-3xl font-bold text-center mb-8 text-blue-400">
+          UserOperation Events Monitor
+        </h1>
+        
+        <SearchBar onSearch={handleSearch} />
+        
+        {error && (
+          <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded relative mb-4">
+            {error}
+          </div>
+        )}
 
-      {loading ? (
-        <div className="text-center py-4">Loading...</div>
-      ) : events.length === 0 ? (
-        <p className="text-center text-gray-500 py-4">No events found</p>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event: any) => (
-            <div key={event.userOpHash} className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition-shadow">
-              <p className="text-sm text-gray-500">Hash:</p>
-              <p className="font-mono text-sm mb-2 truncate">{event.userOpHash}</p>
-              
-              <p className="text-sm text-gray-500">Sender:</p>
-              <p className="font-mono text-sm mb-2 truncate">{event.sender}</p>
-              
-              <p className="text-sm text-gray-500">Paymaster:</p>
-              <p className="font-mono text-sm mb-2 truncate">{event.paymaster}</p>
-              
-              <p className="text-sm text-gray-500">Block:</p>
-              <p className="font-mono text-sm mb-2">{event.blockNumber}</p>
-              
-              <p className="text-sm text-gray-500">Status:</p>
-              <span className={`inline-block px-2 py-1 rounded text-sm ${
-                event.success 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
-              }`}>
-                {event.success ? 'Success' : 'Failed'}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-400"></div>
+          </div>
+        ) : events.length === 0 ? (
+          <p className="text-center text-gray-400 py-8">No events found</p>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {events.map((event: any) => (
+              <div 
+                key={event.userOpHash} 
+                className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-all duration-300 border border-gray-700 hover:border-blue-500/50 shadow-lg"
+              >
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-blue-400">Hash</p>
+                    <p className="font-mono text-sm truncate text-gray-300">{event.userOpHash}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-blue-400">Sender</p>
+                    <p className="font-mono text-sm truncate text-gray-300">{event.sender}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-blue-400">Paymaster</p>
+                    <p className="font-mono text-sm truncate text-gray-300">{event.paymaster}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-blue-400">Block</p>
+                    <p className="font-mono text-sm text-gray-300">{event.blockNumber}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-blue-400">Status</p>
+                    <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                      event.success 
+                        ? 'bg-green-900/50 text-green-300 border border-green-500/50' 
+                        : 'bg-red-900/50 text-red-300 border border-red-500/50'
+                    }`}>
+                      {event.success ? 'Success' : 'Failed'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

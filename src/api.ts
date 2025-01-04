@@ -13,10 +13,14 @@ db.on('error', (err) => {
 
 // Récupérer les événements avec des filtres
 app.get('/events', (req, res) => {
-    const { sender, paymaster, fromBlock, toBlock, success } = req.query;
+    const { userOpHash, sender, paymaster, fromBlock, toBlock, success } = req.query;
     const conditions: string[] = [];
     const values: any[] = [];
-
+    
+    if (userOpHash) {
+        conditions.push("userOpHash = ?");
+        values.push(userOpHash);
+    }
     if (sender) {
         conditions.push("sender = ?");
         values.push(sender);
